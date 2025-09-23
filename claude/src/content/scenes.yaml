@@ -1,0 +1,216 @@
+scenes:
+  tavern_start:
+    id: "tavern_start"
+    title: "The Crossed Swords Tavern"
+    chapter: 1
+    synopsis: "Your adventure begins in the warm, welcoming atmosphere of the region's most famous tavern"
+    description: |
+      The Crossed Swords Tavern welcomes you with the warm glow of firelight and the comforting buzz of conversation.
+      Adventurers of all kinds gather around sturdy wooden tables, sharing tales of distant lands and bold deeds.
+      The aroma of hearty stew and fresh-baked bread fills the air, while the famous dwarven ale flows freely from the bar.
+    canonical_facts:
+      - "The fireplace crackles warmly in the corner, never going out"
+      - "Two ancient swords cross above the mantle, gleaming in the firelight"
+      - "A job board by the entrance holds notices from locals seeking help"
+      - "The barrel-chested dwarf behind the bar is Thorin Ironbrew"
+    tags: ["tavern", "safe_haven", "social", "starting_location"]
+    mood: "welcoming"
+    encounter_type: "social"
+    difficulty: "Easy"
+    npcs:
+      - id: "thorin_barkeep"
+        position: "behind the bar"
+        activity: "cleaning mugs and serving drinks"
+      - id: "elena_bard"
+        position: "near the fireplace"
+        activity: "tuning her lute and humming softly"
+    exits:
+      - direction: "north"
+        destination: "market_square"
+        description: "Through the front door to the bustling market square"
+        requirements: []
+      - direction: "east"
+        destination: "harbor_district"
+        description: "Out the side door toward the harbor district"
+        requirements: []
+    available_actions:
+      - "Approach the bar and talk to Thorin"
+      - "Listen to the bard by the fireplace"
+      - "Examine the job board for opportunities"
+      - "Order food and drink"
+      - "Mingle with other patrons"
+
+  market_square:
+    id: "market_square"
+    title: "The Bustling Market Square"
+    chapter: 1
+    synopsis: "The heart of the city's commerce, alive with merchants, shoppers, and the energy of trade"
+    description: |
+      The market square stretches before you, a vast cobblestone plaza filled with colorful stalls and busy merchants.
+      The ornate fountain at the center sparkles in the sunlight, surrounded by flower vendors and food carts.
+      The imposing clocktower looms overhead, its bronze bells marking the passage of time with sonorous chimes.
+    canonical_facts:
+      - "The central fountain is carved from white marble with intricate designs"
+      - "Market day occurs every three days, drawing crowds from surrounding areas"
+      - "The clocktower chimes on the hour and can be heard throughout the city"
+      - "Guards in blue uniforms patrol the square to maintain order"
+    tags: ["urban", "commerce", "social", "busy"]
+    mood: "energetic"
+    encounter_type: "social"
+    difficulty: "Easy"
+    npcs:
+      - id: "merchant_aldric"
+        position: "at a well-appointed stall"
+        activity: "displaying wares and haggling with customers"
+      - id: "guard_captain_sera"
+        position: "near the fountain"
+        activity: "observing the crowd with watchful eyes"
+    exits:
+      - direction: "south"
+        destination: "tavern_start"
+        description: "Back to the Crossed Swords Tavern"
+        requirements: []
+      - direction: "east"
+        destination: "harbor_district"
+        description: "Down the main street to the harbor"
+        requirements: []
+      - direction: "west"
+        destination: "residential_quarter"
+        description: "Into the quieter residential area"
+        requirements: []
+      - direction: "north"
+        destination: "noble_district"
+        description: "Up the hill to the noble district"
+        requirements: ["reputation >= 25"]
+    available_actions:
+      - "Browse the merchant stalls"
+      - "Speak with the guard captain"
+      - "Toss a coin in the fountain for luck"
+      - "Gather information from other shoppers"
+      - "Look for work opportunities"
+
+  harbor_district:
+    id: "harbor_district"
+    title: "The Busy Harbor"
+    chapter: 1
+    synopsis: "A maze of docks and warehouses where ships from distant lands bring exotic goods and stranger tales"
+    description: |
+      The salty breeze carries the scent of the sea and exotic spices as you enter the harbor district.
+      Tall ships with colorful sails bob at anchor while dock workers hurry about their business.
+      The lighthouse stands sentinel at the harbor's mouth, its magical beacon ready to guide vessels safely home.
+    canonical_facts:
+      - "Ships arrive with the morning tide and depart with the evening"
+      - "The lighthouse's beacon glows with an eternal magical flame"
+      - "Warehouses line the waterfront, filled with goods from across the realm"
+      - "The harbormaster's office controls all maritime traffic"
+    tags: ["port", "commerce", "transport", "maritime"]
+    mood: "bustling"
+    encounter_type: "exploration"
+    difficulty: "Moderate"
+    npcs:
+      - id: "captain_maritime"
+        position: "on the main dock"
+        activity: "supervising cargo loading"
+      - id: "suspicious_figure"
+        position: "in the shadows between warehouses"
+        activity: "watching the ships with keen interest"
+    exits:
+      - direction: "west"
+        destination: "market_square"
+        description: "Back up the main street to the market"
+        requirements: []
+      - direction: "south"
+        destination: "tavern_start"
+        description: "Through the side streets to the tavern"
+        requirements: []
+      - direction: "north"
+        destination: "lighthouse"
+        description: "Along the breakwater to the lighthouse"
+        requirements: []
+    available_actions:
+      - "Investigate the ships and their cargo"
+      - "Speak with the dock workers"
+      - "Follow the suspicious figure"
+      - "Visit the harbormaster's office"
+      - "Explore the warehouses"
+
+  lighthouse:
+    id: "lighthouse"
+    title: "The Ancient Lighthouse"
+    chapter: 1
+    synopsis: "An imposing tower of white stone, crowned with an eternal magical flame"
+    description: |
+      The lighthouse rises majestically from the rocky breakwater, its white stone walls weathered by centuries of storms.
+      Spiral stairs wind up the interior, leading to the beacon chamber where an eternal flame burns with magical intensity.
+      The view from the top reveals the vast expanse of the azure sea stretching to the horizon.
+    canonical_facts:
+      - "The lighthouse was built using ancient magical techniques"
+      - "The flame at the top has never been extinguished"
+      - "Strange symbols are carved into the base of the tower"
+      - "The lighthouse keeper is rumored to be over 200 years old"
+    tags: ["ancient", "magical", "solitary", "mysterious"]
+    mood: "mystical"
+    encounter_type: "exploration"
+    difficulty: "Moderate"
+    npcs:
+      - id: "keeper_old_salt"
+        position: "in the lighthouse chamber"
+        activity: "tending the magical flame"
+    exits:
+      - direction: "south"
+        destination: "harbor_district"
+        description: "Back along the breakwater to the harbor"
+        requirements: []
+    available_actions:
+      - "Climb to the top of the lighthouse"
+      - "Examine the ancient symbols"
+      - "Speak with the lighthouse keeper"
+      - "Study the magical flame"
+      - "Enjoy the panoramic view"
+
+encounter_templates:
+  skill_challenge:
+    description: "A situation requiring clever problem-solving"
+    typical_dcs:
+      easy: 10
+      moderate: 15
+      hard: 18
+    rewards:
+      success: "Progress the story and gain confidence"
+      failure: "Complication but alternative path available"
+
+  social_encounter:
+    description: "Meeting and interacting with important NPCs"
+    typical_dcs:
+      easy: 12
+      moderate: 15
+      hard: 20
+    rewards:
+      success: "Information, allies, or opportunities"
+      failure: "Missed opportunities but no permanent harm"
+
+  exploration:
+    description: "Discovering secrets and hidden knowledge"
+    typical_dcs:
+      easy: 10
+      moderate: 15
+      hard: 18
+    rewards:
+      success: "Useful items, lore, or shortcuts"
+      failure: "Dangers or time lost"
+
+story_hooks:
+  - title: "The Missing Merchant"
+    description: "A prominent trader has vanished along with his valuable cargo"
+    complexity: "simple"
+    estimated_duration: "2-3 sessions"
+
+  - title: "Lights in the Forest"
+    description: "Strange magical phenomena have been reported in the northern woods"
+    complexity: "moderate"
+    estimated_duration: "4-6 sessions"
+
+  - title: "The Prophecy Unveiled"
+    description: "Ancient predictions speak of a great change coming to the realm"
+    complexity: "complex"
+    estimated_duration: "8-12 sessions"

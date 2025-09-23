@@ -1,0 +1,181 @@
+world:
+  name: "The Realm of Aethros"
+  description: "A world where magic and technology coexist in an uneasy balance"
+
+locations:
+  crossed_swords_tavern:
+    name: "The Crossed Swords Tavern"
+    type: "tavern"
+    tags: ["safe_haven", "social", "starting_location"]
+    description: "A warm, welcoming tavern known throughout the region as a gathering place for adventurers"
+    canonical_facts:
+      - "The fireplace has burned continuously for over 200 years"
+      - "The crossed swords above the mantle belonged to the tavern's founders"
+      - "Local adventurers leave messages on the job board by the entrance"
+      - "The ale is brewed in-house and considered the finest in three kingdoms"
+    npcs:
+      - "thorin_barkeep"
+      - "elena_bard"
+    exits:
+      - direction: "north"
+        destination: "market_square"
+        description: "The bustling market square"
+      - direction: "east"
+        destination: "harbor_district"
+        description: "The busy harbor with ships from distant lands"
+
+  market_square:
+    name: "Market Square"
+    type: "urban"
+    tags: ["commerce", "social", "busy"]
+    description: "The heart of the city's commerce, bustling with merchants and townspeople"
+    canonical_facts:
+      - "The fountain in the center is said to grant luck to those who toss a coin"
+      - "Market day is every three days, drawing traders from across the region"
+      - "The clocktower chimes every hour, heard throughout the city"
+    npcs:
+      - "merchant_aldric"
+      - "guard_captain_sera"
+
+  harbor_district:
+    name: "Harbor District"
+    type: "port"
+    tags: ["commerce", "transport", "salty_air"]
+    description: "A maze of docks, warehouses, and sailor's haunts overlooking the azure bay"
+    canonical_facts:
+      - "Ships arrive with the morning tide and depart with the evening tide"
+      - "The lighthouse guides ships safely to harbor with its magical beacon"
+      - "Smugglers are known to operate in the darker corners of the district"
+
+npcs:
+  thorin_barkeep:
+    name: "Thorin Ironbrew"
+    race: "Dwarf"
+    role: "Tavern Keeper"
+    disposition: "helpful"
+    age: 156
+    description: "A stout dwarf with a magnificent braided beard and kind eyes"
+    personality:
+      - "Hospitable and welcoming to all travelers"
+      - "Has a vast knowledge of local history and rumors"
+      - "Protective of his regular customers"
+      - "Extremely proud of his brewing skills"
+    knowledge:
+      - topic: "local_history"
+        information: "The city was founded 300 years ago by refugees fleeing the Dragon Wars"
+        keywords: ["history", "founding", "dragons", "wars"]
+      - topic: "current_events"
+        information: "Strange lights have been seen in the northern forests lately"
+        keywords: ["lights", "forest", "strange", "north"]
+      - topic: "brewing"
+        information: "The secret ingredient in his ale is a rare mountain herb"
+        keywords: ["ale", "brewing", "secret", "herb"]
+    secrets:
+      - information: "He keeps a hidden stash of ancient dwarven gold beneath the tavern"
+        trust_required: 75
+    quests:
+      - name: "The Missing Shipment"
+        description: "A shipment of rare hops never arrived from the eastern provinces"
+        reward: "50 gold and free drinks for a week"
+
+  elena_bard:
+    name: "Elena Songweaver"
+    race: "Half-Elf"
+    role: "Bard"
+    disposition: "mysterious"
+    age: 42
+    description: "An elegant half-elf with silver-streaked hair and knowing eyes"
+    personality:
+      - "Speaks in riddles and metaphors"
+      - "Seems to know more than she lets on"
+      - "Has traveled extensively and seen many wonders"
+      - "Values stories and knowledge above gold"
+    knowledge:
+      - topic: "ancient_magic"
+        information: "The old ways of magic are returning to the world"
+        keywords: ["magic", "ancient", "old ways", "returning"]
+      - topic: "prophecy"
+        information: "A great change is coming that will reshape the realms"
+        keywords: ["prophecy", "change", "reshape", "realms"]
+    secrets:
+      - information: "She is actually a member of the Circle of Seers"
+        trust_required: 90
+    special_abilities:
+      - "Can cast minor illusion spells"
+      - "Has prophetic dreams"
+
+  merchant_aldric:
+    name: "Aldric Goldweaver"
+    race: "Human"
+    role: "Merchant"
+    disposition: "neutral"
+    age: 45
+    description: "A well-dressed merchant with calculating eyes and a ready smile"
+    personality:
+      - "Business-minded but fair in his dealings"
+      - "Always looking for new opportunities"
+      - "Well-connected throughout the trading networks"
+      - "Values reputation above quick profit"
+    inventory:
+      - name: "Healing Potion"
+        price: 50
+        description: "Restores 25 HP when consumed"
+      - name: "Rope (50 feet)"
+        price: 10
+        description: "Strong hemp rope"
+      - name: "Lockpicks"
+        price: 25
+        description: "A set of fine lockpicking tools"
+      - name: "Travel Rations"
+        price: 5
+        description: "Food for one day of travel"
+
+organizations:
+  city_guard:
+    name: "Aethros City Guard"
+    type: "law_enforcement"
+    reputation: "respected"
+    description: "The city's peacekeeping force, known for their professionalism"
+
+  circle_of_seers:
+    name: "The Circle of Seers"
+    type: "secret_society"
+    reputation: "mysterious"
+    description: "A secretive organization of prophets and fortune-tellers"
+
+  merchants_guild:
+    name: "The Merchants' Guild"
+    type: "trade_organization"
+    reputation: "influential"
+    description: "A powerful organization controlling much of the region's trade"
+
+historical_events:
+  dragon_wars:
+    name: "The Dragon Wars"
+    date: "300 years ago"
+    description: "A devastating conflict between dragons and the mortal races"
+    consequences:
+      - "Many cities were destroyed"
+      - "Dragons retreated to remote mountainous regions"
+      - "Refugees founded new settlements, including Aethros"
+
+  great_awakening:
+    name: "The Great Magical Awakening"
+    date: "50 years ago"
+    description: "A surge in magical energy that awakened dormant abilities"
+    consequences:
+      - "More people began manifesting magical talents"
+      - "Ancient magical artifacts became active again"
+      - "The balance between magic and technology shifted"
+
+themes:
+  - "The tension between tradition and progress"
+  - "The responsibility that comes with power"
+  - "The importance of community and belonging"
+  - "The mystery of ancient knowledge"
+
+tone:
+  - "Optimistic but grounded"
+  - "Mysterious without being dark"
+  - "Adventurous and exciting"
+  - "Character-driven storytelling"
