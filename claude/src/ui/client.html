@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic RPG</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header class="game-header">
+            <h1>Agentic RPG</h1>
+            <div class="session-info">
+                <span id="session-id">Session: Loading...</span>
+                <span id="turn-count">Turn: 0</span>
+            </div>
+        </header>
+
+        <main class="game-main">
+            <div class="game-board">
+                <div class="scene-panel">
+                    <div class="scene-card">
+                        <div class="scene-image">
+                            <img id="scene-img" src="https://via.placeholder.com/512x512/4682B4/F0F8FF?text=Loading..." alt="Scene">
+                            <div class="image-loading" id="image-loading" style="display: none;">
+                                <div class="spinner"></div>
+                                <span>Generating image...</span>
+                            </div>
+                        </div>
+                        <div class="scene-info">
+                            <h2 id="scene-title">Welcome to Your Adventure</h2>
+                            <div class="scene-tags" id="scene-tags"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="narrative-panel">
+                    <div class="narration-stream" id="narration-stream">
+                        <div class="narration-text" id="narration-text">
+                            Your adventure begins here. The world awaits your choices.
+                        </div>
+                    </div>
+
+                    <div class="action-log" id="action-log">
+                        <h3>Action Log</h3>
+                        <div class="log-entries" id="log-entries"></div>
+                    </div>
+                </div>
+
+                <div class="character-panel">
+                    <div class="character-sheet">
+                        <h3>Character</h3>
+                        <div class="character-name" id="character-name">Adventurer</div>
+
+                        <div class="character-stats">
+                            <div class="hp-display">
+                                <label>HP:</label>
+                                <span id="hp-current">25</span>/<span id="hp-max">25</span>
+                                <div class="hp-bar">
+                                    <div class="hp-fill" id="hp-fill" style="width: 100%"></div>
+                                </div>
+                            </div>
+
+                            <div class="abilities">
+                                <div class="ability" data-ability="STR">
+                                    <label>STR</label>
+                                    <span class="ability-score">12</span>
+                                    <span class="ability-mod">+1</span>
+                                </div>
+                                <div class="ability" data-ability="DEX">
+                                    <label>DEX</label>
+                                    <span class="ability-score">14</span>
+                                    <span class="ability-mod">+2</span>
+                                </div>
+                                <div class="ability" data-ability="CON">
+                                    <label>CON</label>
+                                    <span class="ability-score">13</span>
+                                    <span class="ability-mod">+1</span>
+                                </div>
+                                <div class="ability" data-ability="INT">
+                                    <label>INT</label>
+                                    <span class="ability-score">11</span>
+                                    <span class="ability-mod">+0</span>
+                                </div>
+                                <div class="ability" data-ability="WIS">
+                                    <label>WIS</label>
+                                    <span class="ability-score">15</span>
+                                    <span class="ability-mod">+2</span>
+                                </div>
+                                <div class="ability" data-ability="CHA">
+                                    <label>CHA</label>
+                                    <span class="ability-score">10</span>
+                                    <span class="ability-mod">+0</span>
+                                </div>
+                            </div>
+
+                            <div class="resources">
+                                <div class="resource">
+                                    <label>Gold:</label>
+                                    <span id="gold-amount">50</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="inventory">
+                            <h4>Inventory</h4>
+                            <div class="inventory-items" id="inventory-items">
+                                <div class="inventory-item">Basic Equipment</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-panel">
+                <div class="choices-container" id="choices-container">
+                    <h3>Choose your action:</h3>
+                    <div class="choice-chips" id="choice-chips"></div>
+                </div>
+
+                <div class="input-container">
+                    <textarea id="player-input" placeholder="Describe your action..." rows="3"></textarea>
+                    <button id="submit-action" class="action-button">Take Action</button>
+                </div>
+
+                <div class="input-status" id="input-status"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="game-client.js"></script>
+</body>
+</html>

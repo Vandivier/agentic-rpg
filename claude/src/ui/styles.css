@@ -1,0 +1,469 @@
+/* Agentic RPG Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #e6e6e6;
+    min-height: 100vh;
+}
+
+#app {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.game-header h1 {
+    color: #ffd700;
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.session-info span {
+    margin-left: 20px;
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.game-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: 2fr 3fr 1fr;
+    gap: 20px;
+    min-height: 600px;
+}
+
+/* Scene Panel */
+.scene-panel {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.scene-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.scene-image {
+    position: relative;
+    flex: 1;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.scene-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.scene-image:hover img {
+    transform: scale(1.02);
+}
+
+.image-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #ffd700;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.scene-info h2 {
+    color: #ffd700;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.scene-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.scene-tag {
+    background: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+/* Narrative Panel */
+.narrative-panel {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.narration-stream {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    border-left: 4px solid #ffd700;
+}
+
+.narration-text {
+    line-height: 1.6;
+    font-size: 1.1rem;
+    min-height: 200px;
+}
+
+.action-log {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.action-log h3 {
+    color: #ffd700;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.log-entry {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    border-left: 3px solid #666;
+}
+
+.log-entry.success {
+    border-left-color: #4CAF50;
+}
+
+.log-entry.failure {
+    border-left-color: #f44336;
+}
+
+.log-entry.system {
+    border-left-color: #2196F3;
+}
+
+/* Character Panel */
+.character-panel {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.character-sheet h3 {
+    color: #ffd700;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.character-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 10px;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 8px;
+}
+
+.hp-display {
+    margin-bottom: 20px;
+}
+
+.hp-display label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.hp-bar {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.hp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    transition: width 0.3s ease;
+}
+
+.abilities {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.ability {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.ability label {
+    display: block;
+    font-size: 0.8rem;
+    color: #ffd700;
+    margin-bottom: 5px;
+}
+
+.ability-score {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.ability-mod {
+    display: block;
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.resources {
+    margin-bottom: 20px;
+}
+
+.resource {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.inventory h4 {
+    color: #ffd700;
+    margin-bottom: 10px;
+}
+
+.inventory-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+/* Input Panel */
+.input-panel {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.choices-container h3 {
+    color: #ffd700;
+    margin-bottom: 15px;
+}
+
+.choice-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.choice-chip {
+    background: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    padding: 10px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.choice-chip:hover {
+    background: rgba(255, 215, 0, 0.3);
+    border-color: rgba(255, 215, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+.choice-chip.selected {
+    background: rgba(255, 215, 0, 0.4);
+    border-color: #ffd700;
+}
+
+.input-container {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+}
+
+#player-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+    color: #e6e6e6;
+    font-size: 1rem;
+    resize: vertical;
+    min-height: 80px;
+}
+
+#player-input:focus {
+    outline: none;
+    border-color: #ffd700;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.action-button {
+    background: linear-gradient(45deg, #ffd700, #ffed4e);
+    color: #1a1a2e;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.action-button:hover {
+    background: linear-gradient(45deg, #ffed4e, #ffd700);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+}
+
+.action-button:disabled {
+    background: #666;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.input-status {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 0.9rem;
+    min-height: 20px;
+}
+
+.input-status.processing {
+    color: #ffd700;
+}
+
+.input-status.error {
+    color: #f44336;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .game-board {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+    }
+
+    .narrative-panel {
+        order: 1;
+    }
+
+    .scene-panel {
+        order: 2;
+    }
+
+    .character-panel {
+        order: 3;
+    }
+}
+
+@media (max-width: 768px) {
+    #app {
+        padding: 10px;
+    }
+
+    .game-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .abilities {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .input-container {
+        flex-direction: column;
+    }
+
+    .choice-chips {
+        justify-content: center;
+    }
+}
+
+/* Animation for text streaming */
+.streaming {
+    animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
