@@ -1,0 +1,11 @@
+{
+  "name": "agentic-rpg-cursor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Implementation of the Agent-First D&D-Style Narrative RPG spec.",
+  "workspaces": [
+    "backend",
+    "frontend",
+    "packages/*"
+  ]
+}

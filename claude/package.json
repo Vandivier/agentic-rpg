@@ -1,0 +1,35 @@
+{
+  "name": "agentic-rpg",
+  "version": "1.0.0",
+  "description": "An LLM-directed, tool-assisted narrative RPG",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2",
+    "uuid": "^9.0.0",
+    "yaml": "^2.3.2",
+    "seedrandom": "^3.0.5",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "compression": "^1.7.4",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "jest": "^29.6.2",
+    "eslint": "^8.46.0",
+    "@types/node": "^20.4.8",
+    "typescript": "^5.1.6"
+  },
+  "keywords": ["rpg", "narrative", "llm", "agent", "dnd"],
+  "author": "",
+  "license": "MIT"
+}
