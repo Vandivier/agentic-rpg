@@ -120,7 +120,7 @@ class GameClient {
         const action = this.selectedChoice || input;
 
         this.isProcessing = true;
-        this.setStatus('Processing your action...', 'processing');
+        this.showProcessingMessage();
         this.elements.submitButton.disabled = true;
         this.elements.playerInput.disabled = true;
 
@@ -139,10 +139,36 @@ class GameClient {
         this.isProcessing = false;
         this.elements.submitButton.disabled = false;
         this.elements.playerInput.disabled = false;
-        this.setStatus('');
+        this.hideProcessingMessage();
 
         if (data.finalResponse) {
             this.updateFromResponse(data.finalResponse);
+        }
+    }
+
+    showProcessingMessage() {
+        this.setStatus('Result Processing', 'processing');
+        this.startEllipsisAnimation();
+    }
+
+    hideProcessingMessage() {
+        this.stopEllipsisAnimation();
+        this.setStatus('');
+    }
+
+    startEllipsisAnimation() {
+        let dots = 0;
+        this.ellipsisInterval = setInterval(() => {
+            dots = (dots + 1) % 4;
+            const ellipsis = '.'.repeat(dots);
+            this.setStatus(`Result Processing${ellipsis}`, 'processing');
+        }, 500);
+    }
+
+    stopEllipsisAnimation() {
+        if (this.ellipsisInterval) {
+            clearInterval(this.ellipsisInterval);
+            this.ellipsisInterval = null;
         }
     }
 
@@ -174,6 +200,7 @@ class GameClient {
         this.isProcessing = false;
         this.elements.submitButton.disabled = false;
         this.elements.playerInput.disabled = false;
+        this.hideProcessingMessage();
         this.setStatus(data.message || 'An error occurred', 'error');
     }
 

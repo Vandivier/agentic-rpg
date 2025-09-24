@@ -121,12 +121,25 @@ export class ImagePipeline {
   }
 
   generateMockImageUrl(prompt, seed, size) {
-    const baseUrl = 'https://picsum.photos';
-    const [width, height] = size.split('x');
+    const sceneType = this.detectSceneType(prompt);
+    const placeholderId = `${sceneType}_${seed || Date.now()}`;
 
-    const seedParam = seed ? `?random=${seed}` : '';
+    return `/api/images/placeholder-${placeholderId}.jpg`;
+  }
 
-    return `${baseUrl}/${width}/${height}${seedParam}`;
+  detectSceneType(prompt) {
+    const prompt_lower = prompt.toLowerCase();
+
+    if (prompt_lower.includes('tavern') || prompt_lower.includes('inn')) return 'tavern';
+    if (prompt_lower.includes('dungeon') || prompt_lower.includes('cave')) return 'dungeon';
+    if (prompt_lower.includes('forest') || prompt_lower.includes('woods')) return 'forest';
+    if (prompt_lower.includes('castle') || prompt_lower.includes('palace')) return 'castle';
+    if (prompt_lower.includes('town') || prompt_lower.includes('village')) return 'town';
+    if (prompt_lower.includes('mountain') || prompt_lower.includes('peak')) return 'mountain';
+    if (prompt_lower.includes('ocean') || prompt_lower.includes('sea')) return 'ocean';
+    if (prompt_lower.includes('desert') || prompt_lower.includes('sand')) return 'desert';
+
+    return 'adventure';
   }
 
   sanitizePrompt(prompt) {
@@ -258,21 +271,10 @@ export class ImagePipeline {
   }
 
   getFallbackImage(sceneId) {
-    const fallbackImages = {
-      'tavern': 'https://via.placeholder.com/512x512/8B4513/FFE4B5?text=Tavern',
-      'dungeon': 'https://via.placeholder.com/512x512/2F2F2F/8A8A8A?text=Dungeon',
-      'forest': 'https://via.placeholder.com/512x512/228B22/90EE90?text=Forest',
-      'castle': 'https://via.placeholder.com/512x512/708090/F5F5DC?text=Castle',
-      'default': 'https://via.placeholder.com/512x512/4682B4/F0F8FF?text=Adventure'
-    };
+    const sceneType = this.detectSceneType(sceneId);
+    const placeholderId = `fallback_${sceneType}_${Date.now()}`;
 
-    for (const [keyword, url] of Object.entries(fallbackImages)) {
-      if (sceneId.includes(keyword)) {
-        return url;
-      }
-    }
-
-    return fallbackImages.default;
+    return `/api/images/placeholder-${placeholderId}.jpg`;
   }
 
   cleanupOldJobs() {
