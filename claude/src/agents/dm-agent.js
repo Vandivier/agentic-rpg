@@ -151,6 +151,14 @@ export class DMAgent {
     const combatPattern = /\b(?:attack|fight|strike|hit|shoot)\b/i;
     if (combatPattern.test(input)) {
       action.type = 'combat';
+      action.target = { id: 'unknown_enemy', name: 'enemy', ac: 12 };
+      action.attack = {
+        type: 'melee',
+        toHitMod: 3,
+        damage: '1d6+3',
+        damageType: 'physical'
+      };
+      action.targetAC = 12;
     }
 
     const takePattern = /\b(?:take|grab|pick up|get)\b/i;

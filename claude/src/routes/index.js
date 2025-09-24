@@ -1,4 +1,16 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
+import crypto from 'crypto';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 export function setupRoutes(app, orchestrator) {
+  // Serve the main game page
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../ui/client.html'));
+  });
+
   app.get('/health', (req, res) => {
     res.json({
       status: 'healthy',

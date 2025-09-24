@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { DiceRoller } from "dice-typescript";
+import { DiceRoller } from "rpg-dice-roller";
 import seedrandom from "seedrandom";
 
 const router = Router();
@@ -9,7 +9,7 @@ interface RngRollRequest {
   dice: string;
 }
 
-const diceRoller = new DiceRoller();
+const roller = new DiceRoller();
 
 router.post("/roll", (req: Request, res: Response) => {
   const { seed, dice } = req.body as RngRollRequest;
@@ -20,27 +20,20 @@ router.post("/roll", (req: Request, res: Response) => {
 
   try {
     const rng = seedrandom(seed.toString());
-    // Override the default random function with our seeded one
-    diceRoller.roll(dice, () => rng());
-    const result = diceRoller.getLog()[diceRoller.getLog().length - 1];
+    roller.setRand(rng);
 
-    // The structure of the result from dice-typescript is a bit different.
-    // We will adapt it to the format specified in SPEC.md
-    // Example result: { total: 9, rolls: [ [Object] ], string: '2d6+1' }
-    // The rolls themselves are inside an object with more details.
+    const result = roller.roll(dice);
 
-    // This library doesn't easily expose just the raw dice rolls and modifier separately
-    // in the way the spec desires. Let's simplify and return what we can get.
-    // For now, we will return the total. We can refine this later if needed.
-    // A more robust solution might involve parsing the dice string ourselves,
-    // but for the MVP, the total is the most critical part.
-
+    // The rpg-dice-roller library provides a much richer result object.
+    // We can extract the total, individual rolls, and we can infer the modifier.
     const total = result.total;
+    const rolls = result.rolls.flatMap((r) => r.rolls.map((i) => i.value));
 
-    // We can't easily get the individual rolls and modifier without more complex parsing,
-    // which is out of scope for this initial implementation with this library.
-    // We will return an empty array for rolls and 0 for modifier to satisfy the spec's shape.
-    return res.json({ total, rolls: [], modifier: 0 });
+    // Infer the modifier by subtracting the sum of rolls from the total.
+    const sumOfRolls = rolls.reduce((acc, val) => acc + val, 0);
+    const modifier = total - sumOfRolls;
+
+    return res.json({ total, rolls, modifier });
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "An unknown error occurred";

@@ -89,7 +89,9 @@ export class GameOrchestrator {
       }
     }
 
-    this.stateMachine.transition(GameStates.AWAIT_INPUT);
+    if (this.stateMachine.getCurrentState() !== GameStates.AWAIT_INPUT) {
+      this.stateMachine.transition(GameStates.AWAIT_INPUT);
+    }
     return result;
   }
 
