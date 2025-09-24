@@ -1,10 +1,27 @@
 import { WorldTool, SafetyTool } from '../tools/index.js';
+import { GeminiService } from '../services/index.js';
 
 export class NPCAgent {
-  constructor(npcData, lorebook) {
+  constructor(npcData, lorebook, options = {}) {
     this.npc = npcData;
     this.lorebook = lorebook;
     this.conversationHistory = [];
+    this.options = {
+      useGemini: options.useGemini !== false, // Default to true
+      ageRating: options.ageRating || 'Teen',
+      ...options
+    };
+
+    // Initialize Gemini service if available and enabled
+    this.gemini = null;
+    if (this.options.useGemini) {
+      try {
+        this.gemini = new GeminiService();
+      } catch (error) {
+        console.warn('Gemini service not available for NPC, falling back to templates:', error.message);
+        this.options.useGemini = false;
+      }
+    }
   }
 
   async generateDialogue(playerInput, context = {}) {
@@ -42,19 +59,40 @@ export class NPCAgent {
       stateChanges: {}
     };
 
-    if (this.isHostile(context)) {
-      response.dialogue = this.generateHostileDialogue(playerInput);
-      response.actions.push('threatens');
-    } else if (this.isHelpful(context)) {
-      response.dialogue = this.generateHelpfulDialogue(playerInput, knowledge);
-      response.actions.push('assists');
-    } else if (this.isMysterious(context)) {
-      response.dialogue = this.generateMysteriousDialogue(playerInput);
-      response.actions.push('hints');
+    // Use Gemini for dialogue generation if available
+    if (this.options.useGemini && this.gemini) {
+      try {
+        const geminiResult = await this.gemini.generateNPCDialogue({
+          npc: this.npc,
+          playerInput,
+          conversationHistory: this.conversationHistory,
+          context: { ...context, ageRating: this.options.ageRating }
+        });
+
+        if (geminiResult.success) {
+          response.dialogue = geminiResult.dialogue;
+        } else {
+          console.warn('Gemini NPC dialogue failed, using fallback:', geminiResult.error);
+          response.dialogue = this.generateFallbackDialogueText(playerInput, context, knowledge);
+        }
+      } catch (error) {
+        console.error('Gemini NPC dialogue error:', error);
+        response.dialogue = this.generateFallbackDialogueText(playerInput, context, knowledge);
+      }
     } else {
-      response.dialogue = this.generateNeutralDialogue(playerInput);
+      response.dialogue = this.generateFallbackDialogueText(playerInput, context, knowledge);
     }
 
+    // Add actions based on disposition
+    if (this.isHostile(context)) {
+      response.actions.push('threatens');
+    } else if (this.isHelpful(context)) {
+      response.actions.push('assists');
+    } else if (this.isMysterious(context)) {
+      response.actions.push('hints');
+    }
+
+    // Handle special dialogue additions
     if (this.shouldRevealSecret(playerInput, context)) {
       response.dialogue += ` ${this.revealSecret()}`;
       response.stateChanges[`${this.npc.id}_secret_revealed`] = true;
@@ -66,6 +104,18 @@ export class NPCAgent {
     }
 
     return response;
+  }
+
+  generateFallbackDialogueText(playerInput, context, knowledge) {
+    if (this.isHostile(context)) {
+      return this.generateHostileDialogue(playerInput);
+    } else if (this.isHelpful(context)) {
+      return this.generateHelpfulDialogue(playerInput, knowledge);
+    } else if (this.isMysterious(context)) {
+      return this.generateMysteriousDialogue(playerInput);
+    } else {
+      return this.generateNeutralDialogue(playerInput);
+    }
   }
 
   determineMood(context) {

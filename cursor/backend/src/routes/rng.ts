@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { DiceRoller } from "rpg-dice-roller";
+import { roll } from "randsum";
 import seedrandom from "seedrandom";
 
 const router = Router();
@@ -8,8 +8,6 @@ interface RngRollRequest {
   seed: string | number;
   dice: string;
 }
-
-const roller = new DiceRoller();
 
 router.post("/roll", (req: Request, res: Response) => {
   const { seed, dice } = req.body as RngRollRequest;
@@ -20,18 +18,14 @@ router.post("/roll", (req: Request, res: Response) => {
 
   try {
     const rng = seedrandom(seed.toString());
-    roller.setRand(rng);
 
-    const result = roller.roll(dice);
+    // `randsum` allows passing a custom randomizer function directly.
+    const result = roll(dice, { randomizer: rng });
 
-    // The rpg-dice-roller library provides a much richer result object.
-    // We can extract the total, individual rolls, and we can infer the modifier.
+    // The result object from `randsum` matches our spec's needs perfectly.
     const total = result.total;
-    const rolls = result.rolls.flatMap((r) => r.rolls.map((i) => i.value));
-
-    // Infer the modifier by subtracting the sum of rolls from the total.
-    const sumOfRolls = rolls.reduce((acc, val) => acc + val, 0);
-    const modifier = total - sumOfRolls;
+    const rolls = result.rolls;
+    const modifier = result.modifier;
 
     return res.json({ total, rolls, modifier });
   } catch (error) {

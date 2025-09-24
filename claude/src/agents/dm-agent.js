@@ -1,4 +1,5 @@
 import { RulesTool, CombatTool, InventoryTool, WorldTool, SafetyTool } from '../tools/index.js';
+import { GeminiService } from '../services/index.js';
 
 export class DMAgent {
   constructor(lorebook, options = {}) {
@@ -7,8 +8,20 @@ export class DMAgent {
       maxNarrationWords: options.maxNarrationWords || 120,
       choiceCount: options.choiceCount || 3,
       ageRating: options.ageRating || 'Teen',
+      useGemini: options.useGemini !== false, // Default to true
       ...options
     };
+
+    // Initialize Gemini service if available and enabled
+    this.gemini = null;
+    if (this.options.useGemini) {
+      try {
+        this.gemini = new GeminiService();
+      } catch (error) {
+        console.warn('Gemini service not available, falling back to templates:', error.message);
+        this.options.useGemini = false;
+      }
+    }
   }
 
   async processPlayerAction(session, scene, character, playerInput, trace) {
@@ -244,7 +257,7 @@ export class DMAgent {
     return results;
   }
 
-  async generateResponse(toolResults, scene, character) {
+  async generateResponse(toolResults, scene, character, playerAction = '') {
     const response = {
       narration: '',
       actionLog: [],
@@ -253,27 +266,76 @@ export class DMAgent {
       imageRequest: null
     };
 
-    const rollResult = toolResults.toolOutputs.find(r => r.roll !== undefined);
-    if (rollResult) {
-      response.actionLog.push({
-        type: 'check',
-        ability: rollResult.ability,
-        roll: rollResult.roll,
-        total: rollResult.total,
-        dc: rollResult.dc,
-        result: rollResult.result
-      });
+    // Process tool results for action log
+    toolResults.toolOutputs.forEach(result => {
+      if (result.roll !== undefined) {
+        response.actionLog.push({
+          type: 'check',
+          ability: result.ability,
+          roll: result.roll,
+          total: result.total,
+          dc: result.dc,
+          result: result.result
+        });
+      }
+      if (result.hit !== undefined) {
+        response.actionLog.push({
+          type: 'combat',
+          hit: result.hit,
+          damage: result.damage,
+          target: result.target
+        });
+      }
+    });
 
-      if (rollResult.result === 'success') {
-        response.narration = this.generateSuccessNarration(rollResult, scene);
-      } else {
-        response.narration = this.generateFailureNarration(rollResult, scene);
+    // Generate narration using Gemini or fallback to templates
+    if (this.options.useGemini && this.gemini) {
+      try {
+        const geminiResult = await this.gemini.generateNarration({
+          scene,
+          character,
+          playerAction,
+          toolResults,
+          context: { ageRating: this.options.ageRating }
+        });
+
+        if (geminiResult.success) {
+          response.narration = geminiResult.narration;
+        } else {
+          console.warn('Gemini narration failed, using fallback:', geminiResult.error);
+          response.narration = this.generateFallbackNarration(toolResults, scene, character);
+        }
+      } catch (error) {
+        console.error('Gemini narration error:', error);
+        response.narration = this.generateFallbackNarration(toolResults, scene, character);
       }
     } else {
-      response.narration = this.generateNarrativeResponse(scene, character);
+      response.narration = this.generateFallbackNarration(toolResults, scene, character);
     }
 
-    response.choices = this.generateChoices(scene, character);
+    // Generate choices using Gemini or fallback to templates
+    if (this.options.useGemini && this.gemini) {
+      try {
+        const choicesResult = await this.gemini.generateChoices({
+          scene,
+          character,
+          currentSituation: response.narration,
+          numChoices: this.options.choiceCount
+        });
+
+        if (choicesResult.success) {
+          response.choices = choicesResult.choices;
+        } else {
+          console.warn('Gemini choices failed, using fallback:', choicesResult.error);
+          response.choices = this.generateFallbackChoices(scene, character);
+        }
+      } catch (error) {
+        console.error('Gemini choices error:', error);
+        response.choices = this.generateFallbackChoices(scene, character);
+      }
+    } else {
+      response.choices = this.generateFallbackChoices(scene, character);
+    }
 
     const imageResult = toolResults.toolOutputs.find(r => r.jobId);
     if (imageResult) {
@@ -325,7 +387,28 @@ export class DMAgent {
       .replace('{event}', 'new possibilities await');
   }
 
-  generateChoices(scene, character) {
+  generateFallbackNarration(toolResults, scene, character) {
+    const rollResult = toolResults.toolOutputs.find(r => r.roll !== undefined);
+    const combatResult = toolResults.toolOutputs.find(r => r.hit !== undefined);
+
+    if (rollResult) {
+      if (rollResult.result === 'success') {
+        return this.generateSuccessNarration(rollResult, scene);
+      } else {
+        return this.generateFailureNarration(rollResult, scene);
+      }
+    } else if (combatResult) {
+      if (combatResult.hit) {
+        return `Your attack strikes true, dealing ${combatResult.damage?.total || 0} damage to your foe.`;
+      } else {
+        return "Your attack misses its mark, but you quickly recover your stance.";
+      }
+    } else {
+      return this.generateNarrativeResponse(scene, character);
+    }
+  }
+
+  generateFallbackChoices(scene, character) {
     const baseChoices = [
       "Examine your surroundings carefully",
       "Move forward cautiously",

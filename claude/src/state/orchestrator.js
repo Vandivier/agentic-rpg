@@ -141,7 +141,8 @@ export class GameOrchestrator {
     const response = await dmAgent.generateResponse(
       context.toolResults,
       context.scene,
-      context.character
+      context.character,
+      context.playerInput
     );
 
     context.response = response;

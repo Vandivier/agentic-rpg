@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@agentic-rpg/shared": "workspace:*",
-    "rpg-dice-roller": "^5.0.0",
+    "randsum": "^4.2.0",
     "express": "^4.17.21",
     "seedrandom": "^3.0.5"
   }

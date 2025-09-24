@@ -51,4 +51,21 @@ export function setupRoutes(app, orchestrator) {
   app.get('/api/images/placeholder-:id.jpg', (req, res) => {
     res.redirect('https://via.placeholder.com/512x512/333/fff?text=Scene+Image');
   });
+
+  // Test Gemini integration
+  app.get('/api/gemini/test', async (req, res) => {
+    try {
+      const { GeminiService } = await import('../services/index.js');
+      const gemini = new GeminiService();
+
+      const result = await gemini.testConnection();
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error.message,
+        message: 'Gemini service not available'
+      });
+    }
+  });
 }
